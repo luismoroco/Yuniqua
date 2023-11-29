@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+  labels:
+    type: restapi
+spec:
+  selector: 
+    matchLabels:
+      app: flaskapi
+  replicas: 2
+  template:
+    metadata:
+      name: flaskapi-template
+      labels:
+        app: flaskapi
+    spec:
+      containers:
+        - name: flaskapi
+          image: docker.io/library/flasktest:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: flaskapi
+  ports:
+    - protocol: "TCP"
+      port: 8000
+      targetPort: 5000

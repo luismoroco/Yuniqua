@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '${POSTGRES_EXPOSE_PORT}:5432'
