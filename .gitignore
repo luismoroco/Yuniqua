@@ -1,3 +1,4 @@
 /server/venv
+/test/venv
 
 /app/node_modules
