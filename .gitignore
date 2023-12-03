@@ -2,3 +2,5 @@
 /test/venv
 
 /app/node_modules
+
+./server/.vscode

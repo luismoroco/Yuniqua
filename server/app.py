@@ -20,4 +20,4 @@ def handle_realtime_editor_content(serialized_content: Optional[str] = None):
 
 
 if __name__ == "__main__":
-    app_realtime.run(app)
+    app_realtime.run(app, port=8000)
