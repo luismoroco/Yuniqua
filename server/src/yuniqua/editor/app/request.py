@@ -21,6 +21,7 @@ class CreateEditorRequest:
 @dataclass
 class EditEditorRequest:
     editor_id: int
+    owner_id: int
     name: Optional[str]
     max_connections: Optional[int]
     language: Optional[str]

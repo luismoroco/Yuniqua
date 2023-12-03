@@ -10,6 +10,7 @@ from .request import (
     ListEditorRequest,
 )
 from .usecase import EditorUseCase
+from src.yuniqua.base.auth import authorization_required
 
 __all__ = ["editor_blueprint"]
 
@@ -17,10 +18,8 @@ editor_blueprint = Blueprint("editor", __name__, url_prefix="/editor")
 
 
 @editor_blueprint.route("", methods=["POST"])
+@authorization_required
 def create_editor():
-    if "user_info" not in session:
-        return jsonify({"message": "Access denied", "data": None})
-
     res = EditorUseCase().create_editor(
         CreateEditorRequest(
             **request.get_json(), user_id=session["user_info"]["user_id"]
@@ -33,9 +32,14 @@ def create_editor():
 
 
 @editor_blueprint.route("/<editor_id>", methods=["PUT"])
+@authorization_required
 def edit_editor(editor_id: int):
     res = EditorUseCase().edit_editor(
-        EditEditorRequest(**request.get_json(), editor_id=editor_id)
+        EditEditorRequest(
+            **request.get_json(),
+            editor_id=editor_id,
+            owner_id=session["user_info"]["user_id"]
+        )
     )
 
     if isinstance(res, dict):
@@ -44,6 +48,7 @@ def edit_editor(editor_id: int):
 
 
 @editor_blueprint.route("/<editor_id>", methods=["DELETE"])
+@authorization_required
 def delete_editor(editor_id: int):
     res = EditorUseCase().delete_editor(DeleteEditorRequest(editor_id=editor_id))
 
@@ -52,7 +57,8 @@ def delete_editor(editor_id: int):
     return jsonify({"message": "OK", "data": None})
 
 
-@editor_blueprint.route("/<user_id>", methods=["GET"])
+@editor_blueprint.route("/<user_id>/room", methods=["GET"])
+@authorization_required
 def list_editors(user_id: int):
     res = EditorUseCase().list_editors(ListEditorRequest(user_id=user_id))
 

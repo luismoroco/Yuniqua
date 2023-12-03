@@ -60,7 +60,9 @@ class EditorUseCase:
         :param request:
         :return:
         """
-        editor = self.repository.get_editor(session_editor_id=request.editor_id)
+        editor = self.repository.get_editor(
+            session_editor_id=request.editor_id, owner_id=request.owner_id
+        )
 
         if not editor:
             return {"message": "Editor Not Found", "data": None}

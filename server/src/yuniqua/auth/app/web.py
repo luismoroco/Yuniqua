@@ -2,6 +2,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, jsonify, request, session
 
+from src.yuniqua.base.auth import authorization_required
 from .usecase import AuthUseCase
 from .request import LogInRequest
 
@@ -29,6 +30,7 @@ def log_in():
 
 
 @auth_blueprint.route("/log-out", methods=["GET"])
+@authorization_required
 def log_out():
     session.pop("user_info", None)
     return {"message": "OK", "data": None}

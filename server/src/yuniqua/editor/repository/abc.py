@@ -9,7 +9,10 @@ __all__ = ["EditorRepository"]
 class EditorRepository(abc.ABC):
     @abc.abstractmethod
     def get_editor(
-        self, access_token: str = None, session_editor_id: int = None
+        self,
+        access_token: str = None,
+        session_editor_id: int = None,
+        owner_id: int = None,
     ) -> Editor:
         raise NotImplementedError
 

@@ -1,12 +1,13 @@
-from flask import session
+from functools import wraps
+from flask import jsonify, session
 
-__all__ = ["authenticated_required"]
+__all__ = ["authorization_required"]
 
 
-def authenticated_required(view_func):
+def authorization_required(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        if "user_info" in session:
-            return view_func(*args, **kwargs)
-        return "Not Authorized"
-
+        if "user_info" not in session:
+            return jsonify({"message": "Access denied", "data": None})
+        return func(*args, **kwargs)
     return wrapper

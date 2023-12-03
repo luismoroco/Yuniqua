@@ -9,9 +9,14 @@ __all__ = ["EditorPostgresRepository"]
 
 class EditorPostgresRepository(EditorRepository):
     def get_editor(
-        self, access_token: str = None, session_editor_id: int = None
+        self,
+        access_token: str = None,
+        session_editor_id: int = None,
+        owner_id: int = None,
     ) -> Editor:
         where = []
+        if owner_id:
+            where.append(Editor.user_owner_id == owner_id)
 
         if access_token:
             where.append(Editor.access_token == access_token)

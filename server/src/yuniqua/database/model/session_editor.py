@@ -63,6 +63,7 @@ class Editor(Base):
 
     def to_json(self) -> Dict:
         return {
+            "id": self.session_editor_id,
             "name": self.name,
             "access_token": self.access_token,
             "max_connections": self.max_connections,
