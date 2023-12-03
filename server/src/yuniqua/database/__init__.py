@@ -1,8 +1,8 @@
 from src.yuniqua.database.model import (
-    EditorUser,
+    YuniquaUser,
     EditorState,
-    SessionEditor,
+    Editor,
     SupportedLanguage,
 )
 
-__all__ = ["EditorState", "EditorUser", "SessionEditor", "SupportedLanguage"]
+__all__ = ["EditorState", "YuniquaUser", "Editor", "SupportedLanguage"]

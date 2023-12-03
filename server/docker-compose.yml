@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   postgres:
-    image: postgres:14-alpine
+    image: yuniquadb:latest
     restart: always
     env_file: .env
     environment:
@@ -10,3 +10,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - '${POSTGRES_EXPOSE_PORT}:5432'
+  redis:
+    image: redis:latest
+    env_file: .env
+    ports:
+      - '${REDIS_PORT}:6379'

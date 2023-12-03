@@ -1,13 +1,15 @@
-CREATE DATABASE yuniqua_editor;
+CREATE DATABASE yuniqua;
 
-\c yuniqua_editor;
+\c yuniqua;
 
 
 --- YUNIQUA.EDITOR_USER TABLE 
-CREATE TABLE IF NOT EXISTS editor_user (
-    editor_user_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS yuniqua_user (
+    user_id SERIAL PRIMARY KEY,
     username TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    alias TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL
 );
 
 
@@ -41,8 +43,11 @@ VALUES (1, 'PYTHON', 'Python'),
 -- YUNIQUA.SESSION_EDITOR TABLE 
 CREATE TABLE IF NOT EXISTS session_editor (
     session_editor_id SERIAL PRIMARY KEY,
-    name TEXT,
+    name TEXT NOT NULL,
     access_token TEXT NOT NULL,
+    max_connections INTEGER NOT NULL,
+    user_owner_id INTEGER NOT NULL REFERENCES yuniqua_user(user_id) ON DELETE CASCADE,
     language_id INTEGER NOT NULL REFERENCES supported_language(supported_language_id) ON DELETE CASCADE,
-    state_id INTEGER NOT NULL REFERENCES editor_state(editor_state_id) ON DELETE CASCADE
+    state_id INTEGER NOT NULL REFERENCES editor_state(editor_state_id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL
 );

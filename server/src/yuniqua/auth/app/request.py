@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-__all__ = ["CreateUserRequest", "AuthUserCredentialsRequest"]
+__all__ = ["CreateUserRequest", "LogInRequest"]
 
 
 @dataclass
@@ -10,6 +10,6 @@ class CreateUserRequest:
 
 
 @dataclass
-class AuthUserCredentialsRequest:
+class LogInRequest:
     username: str
     password: str

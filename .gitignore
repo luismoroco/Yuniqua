@@ -1,4 +1,7 @@
 /server/venv
 /test/venv
+/server/.idea/
 
 /app/node_modules
+__pycache__/
+.idea/

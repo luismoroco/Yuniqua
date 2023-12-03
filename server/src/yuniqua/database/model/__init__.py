@@ -1,7 +1,7 @@
 from .base import Base
-from .editor_user import EditorUser
+from .yuniqua_user import YuniquaUser
 from .editor_state import EditorState
 from .supported_language import SupportedLanguage
-from .session_editor import SessionEditor
+from .session_editor import Editor
 
-__all__ = ["Base", "EditorUser", "EditorState", "SessionEditor", "SupportedLanguage"]
+__all__ = ["Base", "YuniquaUser", "EditorState", "Editor", "SupportedLanguage"]
