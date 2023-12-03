@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 
 from .request import (
     GetEditorRequest,
@@ -18,7 +18,14 @@ editor_blueprint = Blueprint("editor", __name__, url_prefix="/editor")
 
 @editor_blueprint.route("", methods=["POST"])
 def create_editor():
-    res = EditorUseCase().create_editor(CreateEditorRequest(**request.get_json()))
+    if "user_info" not in session:
+        return jsonify({"message": "Access denied", "data": None})
+
+    res = EditorUseCase().create_editor(
+        CreateEditorRequest(
+            **request.get_json(), user_id=session["user_info"]["user_id"]
+        )
+    )
 
     if isinstance(res, dict):
         return jsonify(res), HTTPStatus.NOT_FOUND

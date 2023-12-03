@@ -1,17 +1,13 @@
 from typing import Optional
-from datetime import datetime
 
 from src.yuniqua.database import YuniquaUser
-from src.yuniqua.database.db import DBModule
+from src.yuniqua.database.db import session
 from src.yuniqua.user.repository.abc import UserRepository
 
 __all__ = ["UserPostgresRepository"]
 
 
-class UserPostgresRepository(UserRepository, DBModule):
-    def __init__(self):
-        super().__init__()
-
+class UserPostgresRepository(UserRepository):
     def get_user(
         self,
         username: Optional[str] = None,
@@ -37,7 +33,7 @@ class UserPostgresRepository(UserRepository, DBModule):
         if password:
             where.append(YuniquaUser.password == password)
 
-        return self.session.query(YuniquaUser).filter(*where).one_or_none()
+        return session.query(YuniquaUser).filter(*where).one_or_none()
 
     def delete_user(self, user_id: int) -> None:
         """
@@ -46,8 +42,4 @@ class UserPostgresRepository(UserRepository, DBModule):
         :param user_id:
         :return:
         """
-        (
-            self.session.query(YuniquaUser)
-            .filter(YuniquaUser.user_id == user_id)
-            .delete()
-        )
+        (session.query(YuniquaUser).filter(YuniquaUser.user_id == user_id).delete())

@@ -10,7 +10,14 @@ __all__ = ["auth_blueprint"]
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 
-@auth_blueprint.route("/log-in", methods=["POST", "GET"])
+@auth_blueprint.route("/test", methods=["GET"])
+def check_session_works():
+    if "user_info" in session:
+        return jsonify({"message": "Welcome", "data": session["user_info"]})
+    return jsonify({"message": "User Not Found", "data": None})
+
+
+@auth_blueprint.route("/log-in", methods=["POST"])
 def log_in():
     res = AuthUseCase().log_in(LogInRequest(**request.get_json()))
 

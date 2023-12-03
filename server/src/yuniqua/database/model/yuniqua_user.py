@@ -23,7 +23,7 @@ class YuniquaUser(Base):
     _date_format = "%Y-%m-%d %H:%M:%S"
 
     session_editors: Mapped[List["Editor"]] = relationship(
-        "SessionEditor",
+        "Editor",
         back_populates="owner",
         cascade="all, delete-orphan",
     )

@@ -1,7 +1,7 @@
 from typing import Dict, Union
 from datetime import datetime
 
-from src.yuniqua.database.db import DBModule
+from src.yuniqua.database.db import session
 from src.yuniqua.database.model import YuniquaUser
 from src.yuniqua.user.repository import UserRepository, UserPostgresRepository
 from src.yuniqua.services.crypt import BcryptService
@@ -15,12 +15,11 @@ from .request import (
 __all__ = ["UserUseCase"]
 
 
-class UserUseCase(DBModule):
+class UserUseCase:
     repository: UserRepository
     bcrypt_service: "BcryptService"
 
     def __init__(self):
-        super().__init__()
         self.repository = UserPostgresRepository()
         self.bcrypt_service = BcryptService()
 
@@ -38,8 +37,8 @@ class UserUseCase(DBModule):
         user.alias = request.alias
         user.created_at = datetime.now()
 
-        self.session.add(user)
-        self.session.commit()
+        session.add(user)
+        session.commit()
 
         return user
 
@@ -58,7 +57,7 @@ class UserUseCase(DBModule):
             return {"message": "User not found"}
 
         self.repository.delete_user(user_id=request.user_id)
-        self.session.commit()
+        session.commit()
 
         return {"message": "OK"}
 
@@ -71,7 +70,7 @@ class UserUseCase(DBModule):
         if request.alias:
             user.alias = request.alias
 
-        self.session.add(user)
-        self.session.commit()
+        session.add(user)
+        session.commit()
 
         return user

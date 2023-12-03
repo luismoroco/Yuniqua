@@ -1,4 +1,5 @@
 from typing import Dict, Union, List
+from datetime import datetime
 
 from .request import (
     CreateEditorRequest,
@@ -7,8 +8,8 @@ from .request import (
     ListEditorRequest,
     GetEditorRequest,
 )
-from src.yuniqua.database.db import DBModule
-from src.yuniqua.database.model import Editor, EditorState, SupportedLanguage
+from src.yuniqua.database.db import session
+from src.yuniqua.database.model import Editor, EditorStateType, SupportedLanguageType
 from src.yuniqua.user.repository import UserRepository, UserPostgresRepository
 from src.yuniqua.editor.repository import EditorRepository, EditorPostgresRepository
 from src.yuniqua.services.token import TokenService, TokenBase
@@ -16,13 +17,12 @@ from src.yuniqua.services.token import TokenService, TokenBase
 __all__ = ["EditorUseCase"]
 
 
-class EditorUseCase(DBModule):
+class EditorUseCase:
     user_repository: UserRepository
     token_service: TokenBase
     repository: EditorRepository
 
     def __init__(self):
-        super().__init__()
         self.user_repository = UserPostgresRepository()
         self.token_service = TokenService()
         self.repository = EditorPostgresRepository()
@@ -43,12 +43,13 @@ class EditorUseCase(DBModule):
         editor.name = request.name
         editor.access_token = self.token_service.generate_token()
         editor.max_connections = request.max_connections
-        editor.language_id = SupportedLanguage[request.language].value
-        editor.state_id = EditorState["ACTIVE"].value
+        editor.language_id = SupportedLanguageType[request.language].value
+        editor.state_id = EditorStateType.ACTIVE.value
+        editor.created_at = datetime.now()
         editor.owner = user
 
-        self.session.add(editor)
-        self.session.commit()
+        session.add(editor)
+        session.commit()
 
         return editor
 
@@ -71,10 +72,10 @@ class EditorUseCase(DBModule):
             editor.max_connections = request.max_connections
 
         if request.language:
-            editor.language_id = SupportedLanguage[request.language].value
+            editor.language_id = SupportedLanguageType[request.language].value
 
-        self.session.add(editor)
-        self.session.commit()
+        session.add(editor)
+        session.commit()
 
         return editor
 
@@ -90,10 +91,10 @@ class EditorUseCase(DBModule):
         if not editor:
             return {"message": "Editor Not Found", "data": None}
 
-        editor.state_id = EditorState.ARCHIVED.value
+        editor.state_id = EditorStateType.ARCHIVED.value
 
-        self.session.add(editor)
-        self.session.commit()
+        session.add(editor)
+        session.commit()
 
         return {"message": "Editor Archived", "data": None}
 
@@ -105,7 +106,7 @@ class EditorUseCase(DBModule):
         :return:
         """
         return self.repository.list_editors(
-            user_id=request.user_id, states_ids=[EditorState.ACTIVE.value]
+            user_id=request.user_id, states_ids=[EditorStateType.ACTIVE.value]
         )
 
     def get_editor(self, request: GetEditorRequest) -> Union[Dict, Editor]:
