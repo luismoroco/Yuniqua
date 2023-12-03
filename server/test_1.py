@@ -1,5 +1,17 @@
-import pickle
+from enum import Enum
 
-data = b"\x80\x04\x95g\x00\x00\x00\x00\x00\x00\x00}\x94\x8c\tuser_info\x94}\x94(\x8c\auser_id\x94K\x01\x8c\tusername:\x94\x8c\x04root\x94\x8c\x04name\x94\x8c\aLuis M.\x94\x8c\ncreated_at\x94\x8c\x132023-12-03 10:16:47\x94us."
 
-print("data: ", pickle.loads(data))
+class EditorState(Enum):
+    ACTIVE = 1
+    ARCHIVED = 2
+
+
+# Supongamos que tienes una cadena con la clave
+clave_str = "ACTIVE"
+
+# Intenta obtener el valor de la clave en la enumeración
+try:
+    valor = EditorState[clave_str].value
+    print("Valor de", clave_str, ":", valor)
+except KeyError:
+    print("La clave", clave_str, "no se encuentra en la enumeración.")

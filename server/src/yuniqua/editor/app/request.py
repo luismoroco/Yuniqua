@@ -12,6 +12,7 @@ __all__ = [
 
 @dataclass
 class CreateEditorRequest:
+    user_id: int
     name: str
     max_connections: int
     language: str
@@ -37,5 +38,4 @@ class ListEditorRequest:
 
 @dataclass
 class GetEditorRequest:
-    user_id: int
-    editor_id: int
+    access_token: str
