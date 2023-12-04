@@ -15,7 +15,7 @@ auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 def check_session_works():
     if "user_info" in session:
         return jsonify({"message": "Welcome", "data": session["user_info"]})
-    return jsonify({"message": "User Not Found", "data": None})
+    return jsonify({"message": "Not Authorized", "data": None})
 
 
 @auth_blueprint.route("/log-in", methods=["POST"])
@@ -33,4 +33,4 @@ def log_in():
 @authorization_required
 def log_out():
     session.pop("user_info", None)
-    return {"message": "OK", "data": None}
+    return {"message": "Good Bye", "data": None}

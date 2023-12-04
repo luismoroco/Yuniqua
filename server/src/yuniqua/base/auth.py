@@ -10,4 +10,5 @@ def authorization_required(func):
         if "user_info" not in session:
             return jsonify({"message": "Access denied", "data": None})
         return func(*args, **kwargs)
+
     return wrapper

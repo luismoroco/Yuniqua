@@ -1,8 +1,11 @@
-FROM postgres:14-alpine
+FROM python:3.9-slim
 
-COPY init.sql /docker-entrypoint-initdb.d/
+WORKDIR /app
 
-ENV POSTGRES_USER=yuniqua_admin
-ENV POSTGRES_PASSWORD=root
+COPY requirements.txt .
 
-EXPOSE 5432
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000

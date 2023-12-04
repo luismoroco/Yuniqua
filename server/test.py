@@ -1,63 +1,37 @@
-from datetime import timedelta
-
-import redis
-from flask import Flask, render_template_string, request, session, redirect, url_for
-from flask_session import Session
+import sys
 
 
-# Create the Flask application
-app = Flask(__name__)
+def execute_and_save_result(code, output_file):
+    # Save the reference to the current stdout
+    original_stdout = sys.stdout
 
-# Details on the Secret Key: https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY
-# NOTE: The secret key is used to cryptographically-sign the cookies used for storing
-#       the session identifier.
-app.secret_key = "BAD_SECRET_KEY"
+    with open(output_file, "w") as file:
+        sys.stdout = file
 
-# Configure Redis for storing the session data on the server-side
-app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
+        try:
+            # Open the output file for writing
 
-# Create and initialize the Flask-Session object AFTER `app` has been configured
-server_session = Session(app)
+            # Execute the Python code
+            exec(code)
 
-
-@app.route("/set_email", methods=["GET", "POST"])
-def set_email():
-    if request.method == "POST":
-        # Save the form data to the session object
-        session["email"] = request.form["email_address"]
-        return redirect(url_for("get_email"))
-
-    return """
-        <form method="post">
-            <label for="email">Enter your email address:</label>
-            <input type="email" id="email" name="email_address" required />
-            <button type="submit">Submit</button
-        </form>
-        """
+        except Exception as e:
+            print(f"Error while executing the code:\n{str(e)}")
+        finally:
+            # Restore the original stdout
+            sys.stdout = original_stdout
 
 
-@app.route("/get_email")
-def get_email():
-    return render_template_string(
-        """
-            {% if session['email'] %}
-                <h1>Welcome {{ session['email'] }}!</h1>
-            {% else %}
-                <h1>Welcome! Please enter your email <a href="{{ url_for('set_email') }}">here.</a></h1>
-            {% endif %}
-        """
-    )
+# Example Python code as a string
+python_code = """
+def add_numbers(a, b)x:
+    return a + b
 
+result = add_numbers(3, 4)
+print(f"The result is: {result}")
+"""
 
-@app.route("/delete_email")
-def delete_email():
-    # Clear the email stored in the session object
-    session.pop("email", default=None)
-    return "<h1>Session deleted!</h1>"
+# Specify the name of the output file
+output_file_name = "output.txt"
 
-
-if __name__ == "__main__":
-    app.run()
+# Execute the code and save the result to a file
+execute_and_save_result(python_code, output_file_name)
