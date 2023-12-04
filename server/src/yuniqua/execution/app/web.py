@@ -13,7 +13,7 @@ execution_blueprint = Blueprint("execute", __name__, url_prefix="/execute")
 
 
 @execution_blueprint.route("/python", methods=["POST"])
-@authorization_required
+# @authorization_required
 def execute_python():
     res = ExecutionUseCase().run_python(RunPythonScriptRequest(**request.get_json()))
 

@@ -20,3 +20,8 @@ app.register_blueprint(execution_blueprint)
 @app_io.on("connect", namespace="/room")
 def connect_to_room():
     pass
+
+
+@app_io.on("message")
+def test_message(content: str):
+    app_io.emit("message", content)
