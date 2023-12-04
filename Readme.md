@@ -1,5 +1,9 @@
 ## Setup
 
+### Mode 
+- `chmod +x setup.sh`
+- `bash ./setup.sh --mode <local|cluster>`
+
 ### server 
 
 - `cd server`
