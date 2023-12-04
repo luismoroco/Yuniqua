@@ -1,4 +1,4 @@
-from src.yuniqua.app import app
+from src.yuniqua.app import app, app_io
 
 if __name__ == "__main__":
-    app.run()
+    app_io.run(app)
