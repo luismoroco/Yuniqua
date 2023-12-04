@@ -2,15 +2,16 @@ import { Route, Routes } from 'react-router-dom';
 
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
-import App from './App.jsx';
 import Editor from './pages/Editor.jsx';
+import CodeEditor from "./components/CodeEditor.jsx";
 
 function MainRoutes () {
     return(
         <Routes>
             <Route path="/login" element={<Login />}/>
-            <Route path="/editor" element={<Editor />}/>
-            <Route path="/" element={<SignUp />}/>
+            <Route path="/dash" element={<Editor />}/>
+            <Route path="/signup" element={<SignUp />}/>
+            <Route path={"/editor"} element={<CodeEditor/>}/>
         </Routes>
     );
 }

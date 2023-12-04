@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import httpClient from "../httpClient.js";
 import { useNavigate } from 'react-router-dom';
+import { useLocation} from "react-router-dom";
+
 function Login() {
 
     const [formValues, setFormValues] = useState({username:"",password:""});
 
     const navigate = useNavigate();
+    const location = useLocation()
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues((prev) => ({
@@ -17,14 +21,12 @@ function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post("http://127.0.0.1:5000/auth/log-in",{
+        httpClient.post("http://127.0.0.1:5000/auth/log-in",{
             username: formValues.username,
             password: formValues.password
         }).then(function(response){
-            navigate("/editor");
+            navigate("/editor", {state: {data: response.data.data}});
         });
-
-        console.log(formValues);
     };
 
 

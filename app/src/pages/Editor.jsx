@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import httpClient from '../httpClient.js'
+import { useLocation} from "react-router-dom";
 
 function Editor(){
+    const location = useLocation()
+    const {name, username} = location.state.data
+
     const [userID,setUserID] = useState("");
     const [userName,setUserName] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -59,7 +63,7 @@ function Editor(){
                 <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                            Hola, {userName} {userID}
+                            Hola, {name} {username}
                         </h1>
 
                             <div className="flex flex-row mb-2 text-sm font-medium text-gray-900 dark:text-white space-x-4">
