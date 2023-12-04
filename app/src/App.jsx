@@ -1,39 +1,27 @@
-import { useState, useEffect } from 'react'
-import io from 'socket.io-client';
-import './App.css'
-
-const socket = io("http://127.0.0.1:5000");
+import React, { useState} from 'react';
+import {Router, Route, Navigate } from 'react-router-dom';
+import Login from './components/SingIn';
+import CodeEditor from './components/CodeEditor';
 
 function App() {
-  const [editorContent, setEditorContent] = useState("")
-
-  useEffect(() => {
-    socket.on("message", (newEditorContent) => {
-      setEditorContent(newEditorContent);
-    })
-  }, [])
-
-  const updateEditorContent = () => {
-    socket.emit("message", editorContent);
-  }
+  // const [isAuthenticated, setAuthenticated] = useState(false);
 
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <p>
-          <input 
-            type={"text"}
-            value={editorContent}
-            onChange={(e) => setEditorContent(e.target.value)}
-          />
-        </p>
-      </div>
-      <button
-        onClick={updateEditorContent}
-      > Run </button>
-    </>
-  )
+  <CodeEditor
+    language={'python'}
+    tittle={'Editor python'}
+  />
+  );
 }
 
-export default App
+{/* <>
+      <h1>Code Editor Online</h1>
+      <CodeEditor
+        language={'python'}
+      />
+      <button id='run-code'
+        onDoubleClick={console.log('xd clickeaste')}
+      > Run </button>
+    </> */}
+
+export default App;
