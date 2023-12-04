@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-deployment
+  name: yuniqua-server-deploy
   labels:
-    type: restapi
+    type: flask
 spec:
-  selector: 
+  selector:
     matchLabels:
-      app: flaskapi
-  replicas: 2
+      app: flask
+  replicas: 1
   template:
     metadata:
-      name: flaskapi-template
+      name: server-T
       labels:
-        app: flaskapi
+        app: flask
     spec:
       containers:
-        - name: flaskapi
-          image: docker.io/library/flasktest:latest
+        - name: yuniqua-server
+          image: docker.io/library/yuniqua-server:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
@@ -25,12 +25,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service
+  name: yuniqua-server
 spec:
   type: LoadBalancer
   selector:
-    app: flaskapi
+    app: flask
   ports:
     - protocol: "TCP"
-      port: 8000
+      port: 5000
       targetPort: 5000
