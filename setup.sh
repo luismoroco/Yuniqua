@@ -1,4 +1,4 @@
-#!bin/bash 
+#!bin/bash
 
 
 # sudo kind load docker-image flasktest:latest --name yuniqua-cluster
