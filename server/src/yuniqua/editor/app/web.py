@@ -28,7 +28,23 @@ def create_editor():
 
     if isinstance(res, dict):
         return jsonify(res), HTTPStatus.NOT_FOUND
-    return jsonify({"message": "Editor Created", "data": res.to_json()})
+
+    session["rooms"] = session.get("rooms", {})
+    session["rooms"][res.access_token] = {
+        "name": res.name,
+        "language": res.language,
+        "token": res.access_token,
+        "max_connections": res.max_connections,
+        "owner_id": session["user_info"]["user_id"],
+    }
+
+    return jsonify(
+        {
+            "message": "Editor Created",
+            "data": res.to_json(),
+            "room": session["rooms"][res.access_token],
+        }
+    )
 
 
 @editor_blueprint.route("/<editor_id>", methods=["PUT"])
@@ -66,9 +82,16 @@ def list_editors(user_id: int):
 
 
 @editor_blueprint.route("/<token_access>", methods=["GET"])
+@authorization_required
 def get_editor(token_access: str):
+    rooms = session.get("rooms", {})
+    room = rooms.get(token_access)
+
+    if not room:
+        return jsonify({"message": "Room Editor Not Found", "data": None})
+
     res = EditorUseCase().get_editor(GetEditorRequest(access_token=token_access))
 
     if isinstance(res, dict):
         return jsonify(res), HTTPStatus.NOT_FOUND
-    return jsonify({"message": "OK", "data": res.to_json()})
+    return jsonify({"message": "OK", "data": res.to_json(), "room": room})

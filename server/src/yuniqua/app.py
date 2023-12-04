@@ -7,7 +7,16 @@ from src.yuniqua.execution.app import execution_blueprint
 
 __all__ = ["app", "app_io"]
 
+# Blueprint
+
 app.register_blueprint(user_blueprint)
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(editor_blueprint)
 app.register_blueprint(execution_blueprint)
+
+# IO
+
+
+@app_io.on("connect", namespace="/room")
+def connect_to_room():
+    pass
