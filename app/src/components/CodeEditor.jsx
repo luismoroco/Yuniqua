@@ -9,7 +9,7 @@ import logo_cpp from '../assets/cpp.png'
 import run from '../assets/run.png'
 
 
-const socket = io("http://127.0.0.1:5000");
+const socket = io("http://172.20.0.3:32419");
 
 function CodeEditor({language, tittle}) {
   let defaultComment = "";
@@ -40,7 +40,7 @@ function CodeEditor({language, tittle}) {
     socket.emit('message', newContent);
   }, []);
 
-  const apiUrl = 'http://127.0.0.1:5000/execute/python'
+  const apiUrl = 'http://172.20.0.3:32419/execute/python'
   const handleApiCompilerRequest = async () => {
     try {
       const response = await axios.post(apiUrl, {

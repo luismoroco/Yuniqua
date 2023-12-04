@@ -8,9 +8,6 @@ import CodeEditor from "./components/CodeEditor.jsx";
 function MainRoutes () {
     return(
         <Routes>
-            <Route path="/login" element={<Login />}/>
-            <Route path="/dash" element={<Editor />}/>
-            <Route path="/signup" element={<SignUp />}/>
             <Route path={"/editor"} element={<CodeEditor/>}/>
         </Routes>
     );
