@@ -14,6 +14,6 @@ app.secret_key = "MAKANAKY"
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_KEY_PREFIX"] = "yuniqua:"
-app.config["SESSION_REDIS"] = redis.from_url("redis://localhost:6379")
+app.config["SESSION_REDIS"] = redis.from_url("redis://redis:6379")
 
 Session(app)
